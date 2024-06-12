@@ -9,7 +9,7 @@ import weatherData from "../Interface/Interface";
 const Weather = () => {
 
   const [city, setCity] = useState("");
-
+const [error,setError] = useState<string>('')
   const [weather, setWeather] = useState<weatherData | null>(null);
   const [background, setBackground] = useState(
     "url(https://images.unsplash.com/photo-1601297183305-6df142704ea2?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)"
@@ -96,17 +96,22 @@ const Weather = () => {
 
   const fetchWeather = async () => {
     try {
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=981480737a1bf619a74e46f15ee0c088`
-      );
-
-      updateBackground(response.data.weather[0].description);
-      setWeather(response.data);
-      const getTips = getWeatherTips(response.data.weather[0].description);
-      setTips(getTips);
-      setCity("");
+        if(city.trim()){
+            const response = await axios.get(
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=981480737a1bf619a74e46f15ee0c088`
+              );
+              updateBackground(response.data.weather[0].description);
+              setWeather(response.data);
+              const getTips = getWeatherTips(response.data.weather[0].description);
+              setTips(getTips);
+              setCity("");
+              setError('')
+        }else {
+            setError('Please enter a city name')
+        }
+      
     } catch (error) {
-      console.error("Error fetching weather data:", error);
+      setError('Enter valid cities!')
     }
   };
 
@@ -119,10 +124,13 @@ const Weather = () => {
         }}
       >
         <div className="content">
+            <h3>{error}</h3>
           <input
             type="text"
             value={city}
-            onChange={(e) => setCity(e.target.value)}
+            onChange={(e) =>{ 
+                setError('')
+                setCity(e.target.value)}}
             placeholder="Enter city"
           />
           <button onClick={fetchWeather}>Get Weather</button>
