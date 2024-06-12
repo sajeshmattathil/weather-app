@@ -97,7 +97,7 @@ const Weather = () => {
   const fetchWeather = async () => {
     try {
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid='981480737a1bf619a74e46f15ee0c088'`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=981480737a1bf619a74e46f15ee0c088`
       );
 
       updateBackground(response.data.weather[0].description);
