@@ -7,7 +7,6 @@ import weatherData from "../Interface/Interface";
 
 
 const Weather = () => {
-  const API_KEY = import.meta.env.VITE_API_KEY;
 
   const [city, setCity] = useState("");
 
